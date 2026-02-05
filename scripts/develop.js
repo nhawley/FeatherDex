@@ -15,7 +15,7 @@ import esbuild from 'esbuild';
 const outputDir = path.resolve(process.cwd(), 'develop');
 const outputFilePath = path.resolve(outputDir, 'index.html');
 
-esbuild.build({
+const ctx = await esbuild.context({
   entryPoints: ['index.js'],
   define: {
     'process.env.NODE_ENV': '"development"',
@@ -25,30 +25,38 @@ esbuild.build({
   write: false,
   bundle: true,
   minify: false,
-  watch: {
-    onRebuild(error, result) {
-      if (error) console.error('watch build failed:', error)
-      else {
-        handleBuildResult(result)
-          .catch((e) => {
-            console.error(e);
-            process.exit(1);
-          });
-      }
+  plugins: [{
+    name: 'rebuild-notify',
+    setup(build) {
+      build.onEnd(result => {
+        if (result.errors.length > 0) {
+          console.error('watch build failed:', result.errors);
+        } else {
+          handleBuildResult(result)
+            .catch((e) => {
+              console.error(e);
+              process.exit(1);
+            });
+        }
+      });
     },
-  },
-  plugins: [],
+  }],
   platform: 'browser',
   format: 'iife',
   target: [ 'es2015' ],
   outdir: 'build',
-})
-  .then(handleBuildResult)
-  .then(startServer)
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
+});
+
+try {
+  const result = await ctx.rebuild();
+  await handleBuildResult(result);
+  await startServer();
+  await ctx.watch();
+  console.log('Watching for changes...');
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}
 
 async function handleBuildResult (result) {
   const fileName = path.relative(process.cwd(), 'index.html');

@@ -12,7 +12,8 @@
   "scripts": {
     "start": "node scripts/develop.js",
     "build": "node scripts/build.js",
-    "test": "npm run build && node scripts/test-build.js"
+    "test": "npm run build && node scripts/test-build.js",
+    "folder": "node scripts/folder-wiki.js"
   },
   "type": "module",
   "dependencies": {
@@ -23,7 +24,7 @@
     "nanoraf": "^3.1.0"
   },
   "devDependencies": {
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.27.2",
     "minify-html-literals": "^1.3.5"
   },
   "peerDependencies": {

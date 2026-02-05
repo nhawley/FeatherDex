@@ -36,7 +36,7 @@ export const globalView = (state, emit) => {
   }
 
   let saveButton = [
-    changed ? html`<div>{{translate:wikiHasChanged}}</div>` : '',
+    changed ? html`<div>{{translate:dexHasChanged}}</div>` : '',
   ];
   if (state.canPut) {
     const serverUrl = location.origin + root;
@@ -47,8 +47,8 @@ export const globalView = (state, emit) => {
     </div>`);
   }
   saveButton.push(html`<div>
-    <button class=${!state.canPut && changed ? 'chg' : ''} title="{{translate: saveWikiHelpText}}" onclick=${() => emit(events.SAVE_WIKI)}>
-      ${state.canPut ? '{{translate:saveWikiLocallyButton}}' : '{{translate:saveWikiButton}}'}
+    <button class=${!state.canPut && changed ? 'chg' : ''} title="{{translate: saveDexHelpText}}" onclick=${() => emit(events.SAVE_WIKI)}>
+      ${state.canPut ? '{{translate:saveDexLocallyButton}}' : '{{translate:saveDexButton}}'}
     </button>
   </div>`);
 
@@ -63,7 +63,7 @@ export const globalView = (state, emit) => {
           ${
             showEditFields
             ? [
-              html`<p><a href="?page=s">{{translate:wikiSettings}}</a></p>`,
+              html`<p><a href="?page=s">{{translate:dexSettings}}</a></p>`,
               html`<details class=pb ontoggle=${() => document.getElementById('np').focus()}>
                 <summary class=np>{{translate:newPageButton}}</summary>
                 <form onsubmit=${createNewPage}>
@@ -75,12 +75,12 @@ export const globalView = (state, emit) => {
             ] : ''
           }
           <div class=tabs>
-            <button class=${sbTab === '{{translate:pagesTab}}' && 'a'} onclick=${changeTab}>{{translate:pagesTab}}</button>
-            ${t.length > 0 ? html`<button class=${sbTab === '{{translate:tagsTab}}' && 'a'} onclick=${changeTab}>{{translate:tagsTab}}</button>` : ''}
-            <button class=${sbTab === '{{translate:recentTab}}' && 'a'} onclick=${changeTab}>{{translate:recentTab}}</button>
+            <button class=${sbTab === 'pages' ? 'a' : ''} data-tab=pages onclick=${changeTab}>{{translate:pagesTab}}</button>
+            ${t.length > 0 ? html`<button class=${sbTab === 'tags' ? 'a' : ''} data-tab=tags onclick=${changeTab}>{{translate:tagsTab}}</button>` : ''}
+            <button class=${sbTab === 'recent' ? 'a' : ''} data-tab=recent onclick=${changeTab}>{{translate:recentTab}}</button>
           </div>
           ${
-            sbTab === '{{translate:pagesTab}}'
+            sbTab === 'pages'
             ? html`<ul>
               ${parents.map(pp => FW.getChildList(pp, true))}
               <li><a href="?page=a">{{translate:allPages}}</a></li>
@@ -88,13 +88,13 @@ export const globalView = (state, emit) => {
             </ul>` : ''
           }
           ${
-            sbTab === '{{translate:tagsTab}}'
+            sbTab === 'tags'
             ? html`<ul>
               ${t.map(tag => html`<li><a href="?tag=${tag}">${tag}</a></li>`)}
             </ul>` : ''
           }
           ${
-            sbTab === '{{translate:recentTab}}'
+            sbTab === 'recent'
             ? html`<ul style="padding:0">
               ${recents.map(pp => html`<li>
                 <a href="?page=${pp.slug}">${pp.name}</a>
@@ -127,7 +127,7 @@ export const globalView = (state, emit) => {
   }
 
   function changeTab(e) {
-    state.sbTab = e.target.innerText;
+    state.sbTab = e.target.dataset.tab || e.target.getAttribute('data-tab');
     emit(events.RENDER);
   }
 };

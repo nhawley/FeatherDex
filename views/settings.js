@@ -14,13 +14,13 @@ export const settingsView = (state, emit) => {
   const o = p.pages.map(pg => pg.slug).join('\n');
   return [
     html`<header>
-      <h1>{{translate:wikiSettings}}</h1>
+      <h1>{{translate:dexSettings}}</h1>
     </header>`,
     html`<article class=mw>
       <form onsubmit=${saveSettings} class=pb>
-        <label for=wTitle>{{translate:wikiTitle}}</label>
+        <label for=wTitle>{{translate:dexTitle}}</label>
         <input class=w1 id=wTitle value=${p.name} minlength=1 required>
-        <label for=wDesc>{{translate:wikiDescription}}</label>
+        <label for=wDesc>{{translate:dexDescription}}</label>
         <input class=w1 id=wDesc value=${p.desc}>
         <label for=home>{{translate:homePage}}</label>
         <select id=home>
@@ -101,7 +101,7 @@ export const settingsView = (state, emit) => {
           handleCustomJs(result[2]);
           emit(events.ONLOAD);
           emit(events.CHECK_CHANGED);
-          emit(events.NOTIFY, '{{translate:wikiLoaded}}');
+          emit(events.NOTIFY, '{{translate:dexLoaded}}');
         }
       });
     });
