@@ -1,0 +1,18 @@
+# Ignore everything except what we need
+node_modules
+.git
+builds
+develop
+extensions
+helpers
+locales
+nests
+scripts
+test-wiki
+views
+*.md
+*.js
+*.json
+*.css
+*.svg
+!pokemon/_build/

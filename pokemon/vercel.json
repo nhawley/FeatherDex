@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "buildCommand": "cd .. && npm run folder -- pokemon --build",
+  "outputDirectory": "_build",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/wiki.html"
+    }
+  ]
+}
