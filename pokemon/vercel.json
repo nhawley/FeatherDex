@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "buildCommand": null,
-  "outputDirectory": "public",
+  "buildCommand": "npm run folder -- . --build",
+  "outputDirectory": "_build",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/_build/wiki.html"
     }
   ]
 }
